@@ -13,11 +13,7 @@ var defaultOptions = {
     ],
     target: './www/css',
     scssLint: {
-        rules: {
-            Indentation: {
-                width: 4
-            }
-        }
+        'config': './scss-lint.yaml'
     },
     postcssOptions: [
         autoprefixer({
@@ -51,7 +47,7 @@ module.exports = function (gulp, browserSync, options) {
         return gulp.src(options.source)
             .pipe(plugins.inject(
                 gulp.src(options.injectSource)
-                    .pipe(plugins.scssLint())
+                    .pipe(plugins.scssLint(options.scssLint))
                     .pipe(plugins.scssLint.failReporter('E')), {
                     relative: true,
                     removeTags: true
