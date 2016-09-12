@@ -1,5 +1,8 @@
 # Seed Project with Angular2, TypeScript, Gulp, Webpack, BrowserSync, Karma, Protractor
 
+[![Dependency Status](https://david-dm.org/intasect/angular2-seed.svg)](https://david-dm.org/intasect/angular2-seed.svg)
+
+
 ## Requirements
 
 * Node.js 4.0.0+

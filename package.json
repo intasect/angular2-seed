@@ -1,7 +1,7 @@
 {
-  "name": "sample",
+  "name": "angular2-seed",
   "version": "1.0.0",
-  "description": "sample application",
+  "description": "Seed Project with Angular2, TypeScript, Gulp, Webpack, BrowserSync, Karma, Protractor",
   "author": "Zhihui Tian",
   "license": "ISC",
   "main": "index.js",
