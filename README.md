@@ -2,18 +2,19 @@
 
 ## Requirements
 
-* Ruby 2.0.0+
-* Sass 3.4.20+ (`scss-lint` 0.27.0 was the last version to support Sass 3.3)
 * Node.js 4.0.0+
 * npm 2.1.8+
 * protractor 4.0.0+
-
-## Installation
+* Ruby 2.0.0+
+* Sass 3.4.20+ (`scss-lint` 0.27.0 was the last version to support Sass 3.3)
 ### This project requires ruby and scss-lint.
 You must install ruby first, after that please execute the below command to install scss-lint.
 ```bash
 gem install scss_lint
 ```
+
+## Installation
+
 
 ```bash
 # clone the repo
