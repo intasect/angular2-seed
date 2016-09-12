@@ -5,7 +5,7 @@ var env = process.env.ENV;
 
 var config = {
     entry: {
-        app: './app/main.ts'
+        app: './src/main.ts'
     },
     output: {
         filename: './js/app.bundle.js',
@@ -26,6 +26,11 @@ var config = {
                 test: /\.ts$/,
                 exclude: /node_modules|test/,
                 loader: 'ts-loader'
+            },
+            {
+                test: /\.html$/,
+             
+                loader: 'raw'
             }
         ]
     },

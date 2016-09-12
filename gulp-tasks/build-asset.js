@@ -4,8 +4,8 @@ var merge = require('merge');
 var plugins = require('gulp-load-plugins')();
 
 var defaultOptions = {
-    source: ['./src/assets/**'],
-    target: './www/assets'
+    source: ['./src/shared/assets/**'],
+    target: './www/shared/assets'
 };
 
 module.exports = function (gulp, options) {

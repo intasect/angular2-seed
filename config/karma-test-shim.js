@@ -14,16 +14,19 @@ require('zone.js/dist/jasmine-patch');
 require('zone.js/dist/async-test');
 require('zone.js/dist/fake-async-test');
 
+require('ts-helpers');
+
 Error.stackTraceLimit = Infinity;
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 
 var browser = require('@angular/platform-browser-dynamic/testing');
 var testing = require('@angular/core/testing');
 
 testing.TestBed.initTestEnvironment(
-  browser.BrowserDynamicTestingModule,
-  browser.platformBrowserDynamicTesting()
+    browser.BrowserDynamicTestingModule,
+    browser.platformBrowserDynamicTesting()
 );
 
 
@@ -31,11 +34,13 @@ testing.TestBed.initTestEnvironment(
 var context = require.context('../src', true, /\.ts/);
 
 var exclude = [
-  '../main.ts',
-  '../polyfills.ts',
-  '../vendor.ts'
+    './main.ts',
+    './polyfills.ts',
+    './vendor.ts'
 ];
 
 context.keys().forEach(function (key) {
-  if (exclude.indexOf(key) === -1) context(key);
+    if (exclude.indexOf(key) === -1) {
+        context(key)
+    };
 });

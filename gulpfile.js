@@ -24,7 +24,6 @@ gulp.task('start', function (done) {
 
 gulp.task('build', function (done) {
   runSequence('clean',
-    'format',
     'build-sass',
     'build-html',
     'build-typescript',

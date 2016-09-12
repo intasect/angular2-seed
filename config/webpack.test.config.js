@@ -1,38 +1,37 @@
 'use strict'
 
-var webpack = require("webpack");
-var env = process.env.ENV;
+const webpack = require("webpack");
+const argv = require('yargs').argv;
+const path = require('path');
 
-var config = {
-    entry: {
-        app: './app/main.ts'
-    },
-    output: {
-        filename: './js/app.bundle.js',
-    },
+const NODE_ENV = process.env.NODE_ENV;
+const ENV_DEVELOPMENT = (NODE_ENV === 'dev');
+const ENV_PRODUCTION = (NODE_ENV === 'prod');
+const ENV_TEST = (NODE_ENV === 'test');
+
+const config = {
     resolve: {
-        extensions: ['', '.js', '.ts']
+        extensions: ['', '.js', '.ts'],
+        //modulesDirectories: ['node_modules'],
+        //root: path.resolve('.')
     },
     module: {
-        preLoaders: [
-            {
-                test: /\.ts$/,
-                exclude: /node_modules|test/,
-                loader: "tslint"
-            }
-        ],
         loaders: [
             {
                 test: /\.ts$/,
-                exclude: /node_modules|test/,
+                exclude: /node_modules/,
                 loader: 'ts-loader'
+            },
+            {
+                test: /\.html$/,
+                loader: 'raw'
             }
         ],
         postLoaders: [
             {
                 test: /\.ts$/,
                 loader: 'istanbul-instrumenter-loader',
-                include: './app',
+                include: path.resolve('src'),
                 exclude: [
                     /-spec\.ts$/,
                     /node_modules/
@@ -41,19 +40,23 @@ var config = {
         ]
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin()
-    ]
-}
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
 
-if (env === 'production') {
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: ['vendor', 'polyfills'],
+        //     minChunks: Infinity
+        // }),
+    ],
+    devtool: 'inline-source-map',
+    ts: {
+        compilerOptions: {
+            inlineSourceMap: true,
+            sourceMap: false
         }
-    }));
-    config.devtool = 'source-map';
-} else {
-    config.devtool = 'cheap-eval-source-map';
+    }
 }
 
 module.exports = config;
