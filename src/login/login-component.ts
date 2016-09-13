@@ -1,5 +1,6 @@
 // Third party library.
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { LoginService } from './login-service';
 
@@ -9,20 +10,29 @@ import { LoginService } from './login-service';
         LoginService
     ]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
-    public userID: string;
-    public password: string;
+    public model: any;
 
-    constructor(public loginService: LoginService) {
-        console.log('LoginComponent');
+    constructor(public router: Router, public loginService: LoginService) {
+    }
+
+    ngOnInit() {
+        this.model = {
+            email: '',
+            password: ''
+        };
     }
 
     loggedOn(): boolean {
         return true;
     }
 
-    login(): boolean {
-        return this.loginService.login(this.userID, this.password);
+    login(): void {
+        this.loginService.login(this.model.email, this.model.password).then(data => {
+            if (data.result === true) {
+                this.router.navigate(['/portal']);
+            }
+        });
     }
 }

@@ -1,10 +1,16 @@
 import { TestBed, ComponentFixture, async} from '@angular/core/testing';
 
+import { Router } from '@angular/router';
+
 import { Title } from '@angular/platform-browser';
 import { AppComponent } from './app-component';
 
 class MockTitleService extends Title {
-    setTitle(title: string): void {}
+    setTitle(title: string): void { }
+}
+
+class MockRouter extends Router {
+    
 }
 
 describe('AppComponent', () => {
@@ -16,6 +22,10 @@ describe('AppComponent', () => {
                 {
                     provide: Title,
                     useClass: MockTitleService
+                },
+                {
+                    provide: Router,
+                    useClass: MockRouter
                 }
             ]
         });

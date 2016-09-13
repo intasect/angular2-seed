@@ -2,15 +2,19 @@
 
 var merge = require('merge');
 var plugins = require('gulp-load-plugins')();
+var proxyMiddleware = require('http-proxy-middleware');
+
 
 var defaultOptions = {
-    server: './www',
+    server: {
+        baseDir: './www'
+    },
     browser: 'default',
     startPath: '/'
 };
 
 module.exports = function (gulp, browserSync, options) {
-    return function() {
+    return function () {
         options = merge(defaultOptions, options);
         browserSync.init(options);
     }

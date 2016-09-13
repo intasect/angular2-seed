@@ -12,7 +12,7 @@ const ENV_TEST = (NODE_ENV === 'test');
 const config = {
     resolve: {
         extensions: ['', '.js', '.ts'],
-        //modulesDirectories: ['node_modules'],
+        modulesDirectories: ['node_modules'],
         //root: path.resolve('.')
     },
     module: {

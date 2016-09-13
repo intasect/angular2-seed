@@ -1,4 +1,9 @@
-import { TestBed, ComponentFixture, async} from '@angular/core/testing';
+import { TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
+import {Http} from '@angular/http';
+
+import 'rxjs/add/operator/toPromise';
+
+import {HttpService} from '../shared/services/http-service';
 
 import { SharedModule } from '../shared/shared-module';
 
@@ -13,10 +18,12 @@ describe('LoginComponent', () => {
                 SharedModule
             ],
             providers: [
+                Http,
                 LoginService
             ]
         });
     });
+
     it('ログオン済み', async(() => {
         TestBed.compileComponents().then(() => {
             let fixture: ComponentFixture<LoginComponent> = TestBed.createComponent(LoginComponent);
@@ -34,10 +41,10 @@ describe('LoginComponent', () => {
             fixture.whenStable().then(() => {
                 let loginComponent: LoginComponent = fixture.componentInstance;
                 spyOn(loginComponent.loginService, 'login').and.callThrough();
-                loginComponent.userID = 'test';
-                loginComponent.password = 'test123';
+                loginComponent.model.email = 'test';
+                loginComponent.model.password = 'test123';
                 loginComponent.login();
-                expect(loginComponent.loginService.login).toHaveBeenCalledWith(loginComponent.userID, loginComponent.password);
+                expect(loginComponent.loginService.login).toHaveBeenCalledWith(loginComponent.model.email, loginComponent.model.password);
             });
         });
     }));
@@ -46,15 +53,15 @@ describe('LoginComponent', () => {
 describe('LoginService', () => {
     let loginService: LoginService;
 
-    beforeEach(() => {
-        loginService = new LoginService();
-    });
-
-    it('ログイン失敗', async(() => {
-        expect(loginService.login('test', 'test')).toBeTruthy();
+    beforeEach(inject([Http, HttpService], (http: Http, httpService: HttpService) => {
+        loginService = new LoginService(http, httpService);
     }));
 
     it('ログイン失敗', async(() => {
-        expect(loginService.login('abc', '123')).toBeFalsy();
+        expect(loginService.login('test@test.com', 'test')).toBeTruthy();
+    }));
+
+    it('ログイン失敗', async(() => {
+        expect(loginService.login('abc@test.com', '123')).toBeFalsy();
     }));
 });
