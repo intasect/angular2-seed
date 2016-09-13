@@ -4,9 +4,9 @@ var merge = require('merge');
 var plugins = require('gulp-load-plugins')();
 
 var defaultOptions = {
-    server: "./www",
-    browser: "google chrome",
-    startPath: "/"
+    server: './www',
+    browser: 'default',
+    startPath: '/'
 };
 
 module.exports = function (gulp, browserSync, options) {
