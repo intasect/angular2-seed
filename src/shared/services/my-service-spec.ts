@@ -1,4 +1,4 @@
-import {it, describe, expect, beforeEach, inject} from 'angular2/testing';
+import {inject} from '@angular/core/testing';
 import {MyService} from './my-service';
 
 describe('MyService Tests', () => {
