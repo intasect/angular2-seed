@@ -1,9 +1,9 @@
 'use strict'
 
-var webpack = require("webpack");
-var env = process.env.ENV;
+const webpack = require("webpack");
+const env = process.env.ENV;
 
-var config = {
+const config = {
     entry: {
         app: './src/main.ts'
     },
@@ -34,9 +34,12 @@ var config = {
             }
         ]
     },
-    
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin()
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            manifest: require('../manifest.json'),
+        }),
     ]
 }
 
@@ -48,7 +51,7 @@ if (env === 'production') {
     }));
     config.devtool = 'source-map';
 } else {
-    config.devtool = 'cheap-eval-source-map';
+    config.devtool = 'eval-cheap-module-source-map';
 }
 
 module.exports = config;

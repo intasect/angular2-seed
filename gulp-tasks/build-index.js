@@ -9,6 +9,7 @@ var defaultOptions = {
     target: './www/',
     injectSource: [
         './www/lib/**.js',
+        './www/lib/**.css',
         './www/js/**.js',
         './www/css/**.css',
     ]

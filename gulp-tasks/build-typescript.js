@@ -27,10 +27,8 @@ if (env === 'production') {
 }
 
 module.exports = function (gulp, options) {
-    return function () {
-        options = merge(defaultOptions, options);
-        return gulp.src(options.source)
-            .pipe(plugins.webpack(options.webpack))
-            .pipe(gulp.dest(options.target));
-    }
+    options = merge(defaultOptions, options);
+    return gulp.src(options.source)
+        .pipe(plugins.webpack(options.webpack))
+        .pipe(gulp.dest(options.target));
 };
