@@ -1,8 +1,20 @@
 // Third party library.
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { PortalService } from './portal-service';
+
+interface Document {
+    open(): void;
+    print(): void;
+    download(defaultFileName: string, callBack: any): void;
+}
+interface PdfMake {
+    createPdf(documentDefinition: any): Document;
+    fonts: any;
+}
+
+declare var pdfMake: PdfMake;
 
 @Component({
     template: require('./portal.html'),
@@ -48,5 +60,48 @@ export class PortalComponent implements OnInit {
             content = content.replace(scriptSrcReg, '');
             this.content = this.sanitizer.bypassSecurityTrustHtml(content);
         });
+    }
+
+    createPDF() {
+        this.portalService.getData().then(
+            data => {
+                pdfMake.fonts = {
+                    mplus: {
+                        normal: 'mplus-1p-regular.ttf',
+                        bold: 'mplus-1p-regular.ttf',
+                        italics: 'mplus-1p-regular.ttf',
+                        bolditalics: 'mplus-1p-regular.ttf'
+                    }
+                };
+                let documentDefinition = data;
+                let document: Document = pdfMake.createPdf(documentDefinition);
+                console.log(document);
+                document.open();
+            },
+            error => {
+                alert(error);
+            });
+    }
+
+    createPDF2() {
+        this.portalService.getRawData().then(
+            data => {
+                pdfMake.fonts = {
+                    mplus: {
+                        normal: 'mplus-1p-regular.ttf',
+                        bold: 'mplus-1p-regular.ttf',
+                        italics: 'mplus-1p-regular.ttf',
+                        bolditalics: 'mplus-1p-regular.ttf'
+                    }
+                };
+                let documentDefinition = eval('(function() { var doc = ' + data + '; return doc; }())');
+                console.log(documentDefinition);
+                let document: Document = pdfMake.createPdf(documentDefinition);
+                console.log(document);
+                document.open();
+            },
+            error => {
+                alert(error);
+            });
     }
 }

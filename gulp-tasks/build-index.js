@@ -12,6 +12,7 @@ var defaultOptions = {
         './www/lib/**.css',
         './www/js/**.js',
         './www/css/**.css',
+        './www/shared/assets/js/*/**.js'
     ]
 };
 

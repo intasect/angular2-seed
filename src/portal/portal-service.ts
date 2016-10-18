@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import {HttpService} from '../shared/services/http-service';
+import { HttpService } from '../shared/services/http-service';
 
 @Injectable()
 export class PortalService {
@@ -15,5 +15,15 @@ export class PortalService {
             .toPromise()
             .then(response => response.text())
             .catch(this.httpService.handleError);
+    }
+
+    getData() {
+        return this.http.get('shared/assets/mocks/portal/pdf.json').toPromise()
+            .then(response => response.json());
+    }
+
+    getRawData() {
+        return this.http.get('shared/assets/mocks/portal/pdf.txt').toPromise()
+            .then(response => response.text());
     }
 }
