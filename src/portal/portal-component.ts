@@ -33,6 +33,10 @@ export class PortalComponent implements OnInit {
     ngOnInit() {
         this.getHTML();
         JsBarcode('.barcode').init();
+        let canvas = document.createElement('canvas');
+        let test = document.getElementById('test');
+        test.appendChild(canvas);
+        JsBarcode(canvas, '1 1 1 6 1 0 4 0 5 8 8 9 0 0', {format: 'CODE39'});
     }
 
     getHTML(): void {
