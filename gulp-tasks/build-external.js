@@ -15,6 +15,8 @@ var defaultOptions = {
         'node_modules/reflect-metadata/Reflect.js',
         'node_modules/reflect-metadata/Reflect.js.map',
         'node_modules/reflect-metadata/Reflect.js.map',
+        'node_modules/jquery/dist/js/jquery.min.js',
+        'node_modules/jsbarcode/dist/JsBarcode.all.min.js',
         'node_modules/bootstrap/dist/css/bootstrap.min.css',
         'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
         'node_modules/bootstrap/dist/js/bootstrap.min.js'

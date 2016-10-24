@@ -15,6 +15,7 @@ interface PdfMake {
 }
 
 declare var pdfMake: PdfMake;
+declare var JsBarcode: any;
 
 @Component({
     template: require('./portal.html'),
@@ -31,6 +32,7 @@ export class PortalComponent implements OnInit {
 
     ngOnInit() {
         this.getHTML();
+        JsBarcode('.barcode').init();
     }
 
     getHTML(): void {
