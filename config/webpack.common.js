@@ -20,6 +20,8 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+// const autoprefixer = require('autoprefixer-loader');
+
 
 /*
  * Webpack Constants
@@ -128,6 +130,7 @@ module.exports = function (options) {
 
         {
           test: /\.scss$/i, 
+          // loaders: ['style', 'css', 'autoprefixer-loader?browsers=last 2 versions', 'sass']
           loaders: ['to-string-loader', extractCSS.extract(['css','sass'])]
         },
 
@@ -162,6 +165,8 @@ module.exports = function (options) {
       ],
 
     },
+
+    // postcss:[autoprefixer({browsers:['last 2 versions']})],
 
     // sassLoader: {
     //   includePaths: [path.resolve(__dirname, './some-folder')]
