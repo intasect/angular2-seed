@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app',
     template: require('./app.html'),
+    styleUrls: [
+        './app.scss'
+    ],
     providers: [
         Title
     ]

@@ -19,6 +19,9 @@ declare var JsBarcode: any;
 
 @Component({
     template: require('./portal.html'),
+    styleUrls: [
+        './portal.scss'
+    ],
     providers: [
         PortalService
     ]
