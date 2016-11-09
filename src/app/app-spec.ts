@@ -10,7 +10,7 @@ class MockTitleService extends Title {
 }
 
 class MockRouter extends Router {
-    
+
 }
 
 describe('AppComponent', () => {
@@ -28,25 +28,25 @@ describe('AppComponent', () => {
                     useClass: MockRouter
                 }
             ]
-        });
-        fixture = TestBed.createComponent(AppComponent);
+        })
     });
 
     it('ngInitにはsetTitleを呼び出した。', async(() => {
-        fixture.whenStable().then(() => {
-            let appComponent: AppComponent = fixture.componentInstance;
-            spyOn(appComponent, 'ngOnInit').and.callThrough();
-            appComponent.ngOnInit();
-            expect(appComponent.ngOnInit).toHaveBeenCalled();
+        TestBed.compileComponents().then(() => {
+            fixture = TestBed.createComponent(AppComponent);
+            fixture.whenStable().then(() => {
+                let appComponent: AppComponent = fixture.componentInstance;
+                spyOn(appComponent, 'ngOnInit').and.callThrough();
+                appComponent.ngOnInit();
+                expect(appComponent.ngOnInit).toHaveBeenCalled();
+            });
         });
     }));
 
     it('setTitleにはtitleServiceのsetTitleを呼び出した。パラメーターは"Angular2"', async(() => {
-        fixture.whenStable().then(() => {
-            let appComponent: AppComponent = fixture.componentInstance;
-            spyOn(appComponent.titleService, 'setTitle');
-            appComponent.setTitle();
-            expect(appComponent.titleService.setTitle).toHaveBeenCalledWith('Angular2');
-        });
+        let appComponent: AppComponent = fixture.componentInstance;
+        spyOn(appComponent.titleService, 'setTitle');
+        appComponent.setTitle();
+        expect(appComponent.titleService.setTitle).toHaveBeenCalledWith('Angular2');
     }));
 });

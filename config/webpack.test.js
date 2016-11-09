@@ -51,7 +51,7 @@ module.exports = function (options) {
       /**
        * Make sure root is src
        */
-      modules: [ path.resolve(__dirname, 'src'), 'node_modules' ]
+      modules: [path.resolve(__dirname, 'src'), 'node_modules']
 
     },
 
@@ -92,6 +92,13 @@ module.exports = function (options) {
             helpers.root('node_modules/@angular')
           ]
         },
+
+        // {
+        //   enforce: 'pre',
+        //   test: /\.scss$/,
+        //   exclude: /node_modules/,
+        //   loaders: ['raw-loader', 'sass-loader']
+        // },
 
         /**
          * Typescript loader support for .ts and Angular 2 async routes via .async.ts
@@ -211,11 +218,11 @@ module.exports = function (options) {
         helpers.root('src') // location of your src
       ),
 
-       /**
-       * Plugin LoaderOptionsPlugin (experimental)
-       *
-       * See: https://gist.github.com/sokra/27b24881210b56bbaff7
-       */
+      /**
+      * Plugin LoaderOptionsPlugin (experimental)
+      *
+      * See: https://gist.github.com/sokra/27b24881210b56bbaff7
+      */
       new LoaderOptionsPlugin({
         debug: true,
         options: {
