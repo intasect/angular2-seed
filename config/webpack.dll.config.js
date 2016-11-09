@@ -17,7 +17,7 @@ const vendors = [
 
 const config = {
     output: {
-        path: './www/lib',
+        path: './dist/lib',
         filename: '[name].js',
         library: '[name]',
     },

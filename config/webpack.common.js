@@ -228,8 +228,53 @@ module.exports = function (options) {
        */
       new CopyWebpackPlugin([{
         from: 'src/shared/assets',
-        to: 'assets',
-      }]),
+        to: 'shared/assets',
+      },
+        {
+          from: 'node_modules/core-js/client/shim.min.js',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/core-js/client/shim.min.js.map',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/zone.js/dist/zone.js',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/reflect-metadata/Reflect.js',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/reflect-metadata/Reflect.js.map',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/reflect-metadata/Reflect.js.map',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/jquery/dist/jquery.min.js',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/jsbarcode/dist/JsBarcode.all.min.js',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/bootstrap/dist/css/bootstrap.min.css',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
+          to: 'lib'
+        },
+        {
+          from: 'node_modules/bootstrap/dist/js/bootstrap.min.js',
+          to: 'lib'
+        }
+      ]),
 
 
       /*
