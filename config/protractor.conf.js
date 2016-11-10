@@ -5,6 +5,18 @@
 require('ts-node/register');
 var helpers = require('./helpers');
 
+const SSReporter = require('protractor-jasmine2-screenshot-reporter');
+
+const screenshotReporter = new SSReporter({
+    dest: 'e2e-test/screenshots',
+    pathBuilder: function (currentSpec, suites) {
+        var name = currentSpec.fullName;
+        return name.replace(/\s+/g, '-').toLowerCase();
+    },
+    filename: 'index.html',
+    reportTitle: 'e2e tests'
+});
+
 exports.config = {
   baseUrl: 'http://localhost:3000/',
 
@@ -35,8 +47,33 @@ exports.config = {
     }
   },
 
-  onPrepare: function() {
-    browser.ignoreSynchronization = true;
+  onPrepare: function () {
+    var SpecReporter = require('jasmine-spec-reporter');
+    // add jasmine spec reporter
+    jasmine.getEnv().addReporter(new SpecReporter({ displayStacktrace: true }));
+    // Add screenshot reporter
+    jasmine.getEnv().addReporter(screenshotReporter);
+    browser.ignoreSynchronization = false;
+    browser.driver.manage().window().setSize(414, 736);
+
+  },
+
+  beforeLaunch: function () {
+    require('ts-node').register({
+      project: '.',
+      compilerOptions: {
+        module: 'commonjs'
+      },
+      disableWarnings: true,
+      fast: true
+    });
+  },
+
+  // hook into screenshotReporter's afterLaunch
+  afterLaunch: function (exitCode) {
+    return new Promise(function (resolve) {
+      screenshotReporter.afterLaunch(resolve.bind(this, exitCode));
+    });
   },
 
   /**
@@ -45,5 +82,5 @@ exports.config = {
    * useAllAngular2AppRoots: tells Protractor to wait for any angular2 apps on the page instead of just the one matching
    * `rootEl`
    */
-   useAllAngular2AppRoots: true
+  useAllAngular2AppRoots: true
 };
