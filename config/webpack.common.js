@@ -19,7 +19,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 // const autoprefixer = require('autoprefixer-loader');
 
 
@@ -47,7 +47,7 @@ module.exports = function (options) {
   }
 
   const extractCSS = new ExtractTextPlugin(cssFileName);
-  
+
   return {
 
     /*
@@ -129,9 +129,9 @@ module.exports = function (options) {
         },
 
         {
-          test: /\.scss$/i, 
+          test: /\.scss$/i,
           // loaders: ['style', 'css', 'autoprefixer-loader?browsers=last 2 versions', 'sass']
-          loaders: ['to-string-loader', extractCSS.extract(['css','sass'])]
+          loaders: ['to-string-loader', extractCSS.extract(['css', 'sass'])]
         },
 
         /*
@@ -229,52 +229,7 @@ module.exports = function (options) {
       new CopyWebpackPlugin([{
         from: 'src/shared/assets',
         to: 'shared/assets',
-      },
-        {
-          from: 'node_modules/core-js/client/shim.min.js',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/core-js/client/shim.min.js.map',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/zone.js/dist/zone.js',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/reflect-metadata/Reflect.js',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/reflect-metadata/Reflect.js.map',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/reflect-metadata/Reflect.js.map',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/jquery/dist/jquery.min.js',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/jsbarcode/dist/JsBarcode.all.min.js',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/bootstrap/dist/css/bootstrap.min.css',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
-          to: 'lib'
-        },
-        {
-          from: 'node_modules/bootstrap/dist/js/bootstrap.min.js',
-          to: 'lib'
-        }
-      ]),
+      }]),
 
 
       /*
@@ -292,6 +247,64 @@ module.exports = function (options) {
         metadata: METADATA,
         inject: 'head'
       }),
+
+      new HtmlWebpackExternalsPlugin(
+        [
+          // Using a CDN for a JS library
+          {
+            name: 'shim',
+            var: 'shim',
+            path: 'core-js/client/shim.min.js'
+          },
+          {
+            name: 'reflect',
+            var: 'Reflect',
+            path: 'reflect-metadata/Reflect.js'
+          },
+          {
+            name: 'jquery',
+            var: 'jquery',
+            path: 'jquery/dist/jquery.min.js'
+          },
+          // Using a locally installed module for a JS library
+          {
+            name: 'jsBarcode',
+            var: 'JsBarcode',
+            path: 'jsbarcode/dist/JsBarcode.all.min.js'
+          },
+          {
+            name: 'tether',
+            var: 'tether',
+            url: 'https://www.atlasestateagents.co.uk/javascript/tether.min.js'
+          },
+          {
+            name: 'bootstrap',
+            var: 'bootstrap',
+            path: 'bootstrap/dist/js/bootstrap.min.js'
+          },
+          // Using a locally installed module for a JS library
+          {
+            name: 'pdfmake',
+            var: 'pdfmake',
+            path: './src/shared/assets/js/pdfmake/pdfmake.js'
+          },
+          // Using a locally installed module for a JS library
+          {
+            name: 'vfs_fonts',
+            var: 'vfs_fonts',
+            path: './src/shared/assets/js/pdfmake/vfs_fonts.js'
+          },
+          // Using a CDN for a library with no export (e.g. a CSS module)
+          {
+            name: 'bootstrap.css',
+            path: 'bootstrap/dist/css/bootstrap.min.css'
+          }
+        ],
+        {
+          // Resolve local modules relative to this directory
+          basedir: __dirname
+        }
+      ),
 
       /*
        * Plugin: ScriptExtHtmlWebpackPlugin
