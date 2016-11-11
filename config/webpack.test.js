@@ -120,7 +120,7 @@ module.exports = function (options) {
 
             }
           },
-          exclude: [/\.e2e\.ts$/]
+          exclude: [/\-e2e\.ts$/]
         },
 
         /**
@@ -170,7 +170,7 @@ module.exports = function (options) {
           loader: 'istanbul-instrumenter-loader',
           include: helpers.root('src'),
           exclude: [
-            /\.(e2e|spec)\.ts$/,
+            /\-(e2e|spec)\.ts$/,
             /node_modules/
           ]
         }
