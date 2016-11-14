@@ -26,6 +26,7 @@ declare var JsBarcode: any;
 export class PortalComponent implements OnInit {
 
     public content: SafeHtml;
+    public barcode: string;
 
     constructor(private elementRef: ElementRef, public sanitizer: DomSanitizer, public portalService: PortalService) {
     }
@@ -36,7 +37,9 @@ export class PortalComponent implements OnInit {
         let canvas = document.createElement('canvas');
         let test = document.getElementById('test');
         test.appendChild(canvas);
-        JsBarcode(canvas, '1 1 1 6 1 0 4 0 5 8 8 9 0 0', {format: 'CODE39'});
+        JsBarcode(canvas, '1 1 1 6 1 0 4 0 5 8 8 9 0 0', { format: 'CODE39' });
+        this.barcode = canvas.toDataURL('image/png');
+        console.log(this.barcode);
     }
 
     getHTML(): void {
@@ -100,6 +103,7 @@ export class PortalComponent implements OnInit {
                         bolditalics: 'mplus-1p-regular.ttf'
                     }
                 };
+                data = data.replace('<<barcode>>', this.barcode);
                 let documentDefinition = eval('(function() { var doc = ' + data + '; return doc; }())');
                 console.log(documentDefinition);
                 let document: Document = pdfMake.createPdf(documentDefinition);
