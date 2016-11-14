@@ -1,6 +1,7 @@
 import { TestBed, ComponentFixture, async} from '@angular/core/testing';
 
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { Title } from '@angular/platform-browser';
 import { AppComponent } from './app-component';
@@ -10,7 +11,7 @@ class MockTitleService extends Title {
 }
 
 class MockRouter extends Router {
-    
+
 }
 
 describe('AppComponent', () => {
@@ -27,26 +28,34 @@ describe('AppComponent', () => {
                     provide: Router,
                     useClass: MockRouter
                 }
-            ]
-        });
-        fixture = TestBed.createComponent(AppComponent);
+            ],
+            // imports: [RouterModule]
+            // imports: [RouterTestingModule]
+        })
     });
 
     it('ngInitにはsetTitleを呼び出した。', async(() => {
-        fixture.whenStable().then(() => {
-            let appComponent: AppComponent = fixture.componentInstance;
-            spyOn(appComponent, 'ngOnInit').and.callThrough();
-            appComponent.ngOnInit();
-            expect(appComponent.ngOnInit).toHaveBeenCalled();
+        TestBed.compileComponents().then(() => {
+            debugger
+            fixture = TestBed.createComponent(AppComponent);
+            fixture.whenStable().then(() => {
+                let appComponent: AppComponent = fixture.componentInstance;
+                spyOn(appComponent, 'ngOnInit').and.callThrough();
+                appComponent.ngOnInit();
+                expect(appComponent.ngOnInit).toHaveBeenCalled();
+            });
         });
     }));
 
     it('setTitleにはtitleServiceのsetTitleを呼び出した。パラメーターは"Angular2"', async(() => {
-        fixture.whenStable().then(() => {
-            let appComponent: AppComponent = fixture.componentInstance;
-            spyOn(appComponent.titleService, 'setTitle');
-            appComponent.setTitle();
-            expect(appComponent.titleService.setTitle).toHaveBeenCalledWith('Angular2');
+        TestBed.compileComponents().then(() => {
+            fixture = TestBed.createComponent(AppComponent);
+            fixture.whenStable().then(() => {
+                let appComponent: AppComponent = fixture.componentInstance;
+                spyOn(appComponent.titleService, 'setTitle');
+                appComponent.setTitle();
+                expect(appComponent.titleService.setTitle).toHaveBeenCalledWith('Angular2');
+            });
         });
     }));
 });

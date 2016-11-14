@@ -1,73 +1,104 @@
-const argv = require('yargs').argv;
+/**
+ * @author: @AngularClass
+ */
 
-module.exports = function (config) {
-    const options = {
-        //logLevel: config.LOG_DEBUG,
-        files: [
-            './karma-test-shim.js'
-        ],
-        autoWatch: true,
-        singleRun: false,
-        frameworks: ['jasmine'],
-        //browsers: ['Chrome', 'Firefox', 'PhantomJS'],
-        browsers: ['PhantomJS'],
-        reporters: ['dots', 'mocha', 'coverage', 'karma-remap-istanbul', 'html'],
-        preprocessors: {
-            './karma-test-shim.js': ['webpack', 'sourcemap']
-        },
-        webpack: require('./webpack.test.config'),
-        webpackMiddleware: {
-            stats: 'errors-only'
-        },
-        coverageReporter: {
-            dir: '../test-results/coverage',
-            file: 'coverage.json',
-            subdir: 'json',
-            type: 'json'
-        },
-        remapIstanbulReporter: {
-            src: './test-results/coverage/json/coverage.json',
-            reports: {
-                html: './test-results/coverage/html',
-                lcovonly: './test-results/coverage/lcov/coverage.lcov',
-                text: null
-            }
-        },
-        htmlReporter: {
-            outputDir: './test-results/',
-            namedFiles: true,
-            reportName: 'report'
-        }
-    };
+module.exports = function(config) {
+  var testWebpackConfig = require('./webpack.test.js')({env: 'test'});
 
-    // if (argv.coverage) {
-    //     options.reporters = [
-    //         'coverage',
-    //         'karma-remap-istanbul',
-    //         'html'
-    //     ];
+  var configuration = {
 
-    //     options.coverageReporter = {
-    //         dir: '../coverage',
-    //         file: 'coverage.json',
-    //         subdir: 'json',
-    //         type: 'json'
-    //     };
+    // base path that will be used to resolve all patterns (e.g. files, exclude)
+    basePath: '',
 
-    //     options.remapIstanbulReporter = {
-    //         reports: {
-    //             html: 'coverage'
-    //         }
-    //         // src: 'coverage/json/coverage.json',
-    //         // reports: {
-    //         //     html: 'coverage/html',
-    //         //     lcovonly: 'coverage/lcov/coverage.lcov',
-    //         //     text: null
-    //         // },
-    //         // timeoutNotCreated: 5000, // default value
-    //         // timeoutNoMoreFiles: 5000 // default value
-    //     };
-    // }
+    /*
+     * Frameworks to use
+     *
+     * available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+     */
+    frameworks: ['jasmine'],
 
-    config.set(options);
+    // list of files to exclude
+    exclude: [ ],
+
+    /*
+     * list of files / patterns to load in the browser
+     *
+     * we are building the test environment in ./spec-bundle.js
+     */
+    files: [ { pattern: './karma-test-shim.js', watched: false } ],
+
+    /*
+     * preprocess matching files before serving them to the browser
+     * available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+     */
+    preprocessors: { './karma-test-shim.js': ['coverage', 'webpack', 'sourcemap'] },
+
+    // Webpack Config at ./webpack.test.js
+    webpack: testWebpackConfig,
+
+    coverageReporter: {
+      type: 'in-memory'
+    },
+
+    remapCoverageReporter: {
+      'text-summary': null,
+      json: './coverage/coverage.json',
+      html: './coverage/html'
+    },
+
+    // Webpack please don't spam the console when running in karma!
+    webpackMiddleware: { stats: 'errors-only'},
+
+    /*
+     * test results reporter to use
+     *
+     * possible values: 'dots', 'progress'
+     * available reporters: https://npmjs.org/browse/keyword/karma-reporter
+     */
+    reporters: [ 'mocha', 'coverage', 'remap-coverage' ],
+
+    // web server port
+    port: 3000,
+
+    // enable / disable colors in the output (reporters and logs)
+    colors: true,
+
+    /*
+     * level of logging
+     * possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+     */
+    logLevel: config.LOG_INFO,
+
+    // enable / disable watching file and executing tests whenever any file changes
+    autoWatch: true,
+
+    /*
+     * start these browsers
+     * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+     */
+    browsers: [
+      'PhantomJS'
+    ],
+
+    // customLaunchers: {
+    //   ChromeTravisCi: {
+    //     base: 'Chrome',
+    //     flags: ['--no-sandbox']
+    //   }
+    // },
+
+    /*
+     * Continuous Integration mode
+     * if true, Karma captures browsers, runs the tests and exits
+     */
+    singleRun: false
+  };
+
+  // if (process.env.TRAVIS){
+  //   configuration.browsers = [
+  //     'ChromeTravisCi'
+  //   ];
+  // }
+
+  config.set(configuration);
 };
