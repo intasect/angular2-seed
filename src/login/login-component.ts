@@ -6,6 +6,9 @@ import { LoginService } from './login-service';
 
 @Component({
     template: require('./login.html'),
+    styleUrls: [
+        './login.scss'
+    ],
     providers: [
         LoginService
     ]
