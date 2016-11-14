@@ -13,6 +13,13 @@ const routes: Routes = [
     {
         path: '',
         component: AppComponent
+    },
+    {
+        path: 'dynamic-load',
+        loadChildren: () => System.import('../dynamic-load/dynamic-load-module').then((comp: any) => {
+            debugger;
+            return comp.default;
+        })
     }
 ];
 

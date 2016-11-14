@@ -32,6 +32,7 @@ build/Release
 tmp
 test-results
 www
+dist
 
 # OS X trash files
 .DS_Store
