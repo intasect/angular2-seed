@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
     constructor(public router: Router, public titleService: Title) {
+        this.setTitle();
     }
 
     setTitle() {

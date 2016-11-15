@@ -32,21 +32,21 @@ describe('LoginComponent', () => {
     //     fixture.destroy();
     // });
 
-    it('ログオン済み', async(() => {
-        let loginComponent: LoginComponent = fixture.componentInstance;
-        // fixture.detectChanges();
-        expect(loginComponent.loggedOn()).toBe(true, 'should be true.');
-    }));
+    // it('ログオン済み', async(() => {
+    //     let loginComponent: LoginComponent = fixture.componentInstance;
+    //     // fixture.detectChanges();
+    //     expect(loginComponent.loggedOn()).toBe(true, 'should be true.');
+    // }));
 
-    it('ログインサービスが呼び出された', async(() => {
-        let loginComponent: LoginComponent = fixture.componentInstance;
-        spyOn(loginComponent.loginService, 'login').and.callThrough();
-        loginComponent.model.email = 'test';
-        loginComponent.model.password = 'test123';
-        loginComponent.login();
-        // fixture.detectChanges();
-        expect(loginComponent.loginService.login).toHaveBeenCalledWith(loginComponent.model.email, loginComponent.model.password);
-    }));
+    // it('ログインサービスが呼び出された', async(() => {
+    //     let loginComponent: LoginComponent = fixture.componentInstance;
+    //     spyOn(loginComponent.loginService, 'login').and.callThrough();
+    //     loginComponent.model.email = 'test';
+    //     loginComponent.model.password = 'test123';
+    //     loginComponent.login();
+    //     // fixture.detectChanges();
+    //     expect(loginComponent.loginService.login).toHaveBeenCalledWith(loginComponent.model.email, loginComponent.model.password);
+    // }));
 });
 
 // describe('LoginService', () => {

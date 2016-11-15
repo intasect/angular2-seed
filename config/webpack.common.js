@@ -128,21 +128,21 @@ module.exports = function (options) {
           loader: 'json-loader'
         },
 
-        {
-          test: /\.scss$/i,
-          // loaders: ['style', 'css', 'autoprefixer-loader?browsers=last 2 versions', 'sass']
-          loaders: ['to-string-loader', extractCSS.extract(['css', 'sass'])]
-        },
+        // {
+        //   test: /\.scss$/i,
+        //   // loaders: ['style', 'css', 'autoprefixer-loader?browsers=last 2 versions', 'sass']
+        //   loaders: ['to-string-loader', extractCSS.extract(['css', 'sass'])]
+        // },
 
         /*
          * to string and css loader support for *.css files
          * Returns file content as string
          *
          */
-        // {
-        //   test: /\.scss$/,
-        //   loaders: ['to-string-loader', 'style', 'css', 'sass']
-        // },
+        {
+          test: /\.scss$/,
+          loaders: ['to-string-loader', 'style-loader', 'css-loader', 'sass-loader']
+        },
 
         /* Raw loader support for *.html
          * Returns file content as string
@@ -275,7 +275,7 @@ module.exports = function (options) {
           {
             name: 'tether',
             var: 'tether',
-            url: 'https://www.atlasestateagents.co.uk/javascript/tether.min.js'
+            path: 'tether/dist/js/tether.min.js'
           },
           {
             name: 'bootstrap',

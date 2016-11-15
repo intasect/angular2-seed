@@ -35,15 +35,20 @@ module.exports = function(config) {
 
     // Webpack Config at ./webpack.test.js
     webpack: testWebpackConfig,
-
+    junitReporter: {
+      outputDir: '../test-results/junit/',
+      outputFile: 'junit-results.xml',
+      useBrowserName: false,
+    },
     coverageReporter: {
       type: 'in-memory'
     },
 
     remapCoverageReporter: {
       'text-summary': null,
-      json: './coverage/coverage.json',
-      html: './coverage/html'
+      //json: './test-results/coverage/coverage.json',
+      html: './test-results/coverage/html',
+      cobertura: './test-results/coverage/clover.xml',
     },
 
     // Webpack please don't spam the console when running in karma!
@@ -55,7 +60,7 @@ module.exports = function(config) {
      * possible values: 'dots', 'progress'
      * available reporters: https://npmjs.org/browse/keyword/karma-reporter
      */
-    reporters: [ 'mocha', 'coverage', 'remap-coverage' ],
+    reporters: [ 'mocha', 'junit', 'coverage', 'remap-coverage' ],
 
     // web server port
     port: 3000,
@@ -78,14 +83,15 @@ module.exports = function(config) {
      */
     browsers: [
       'PhantomJS'
+      //'Chrome'
     ],
 
-    // customLaunchers: {
-    //   ChromeTravisCi: {
-    //     base: 'Chrome',
-    //     flags: ['--no-sandbox']
-    //   }
-    // },
+    customLaunchers: {
+      ChromeTravisCi: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
 
     /*
      * Continuous Integration mode
