@@ -33,6 +33,7 @@ tmp
 test-results
 www
 dist
+coverage
 
 # OS X trash files
 .DS_Store

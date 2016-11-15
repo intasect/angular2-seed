@@ -17,7 +17,6 @@ const routes: Routes = [
     {
         path: 'dynamic-load',
         loadChildren: () => System.import('../dynamic-load/dynamic-load-module').then((comp: any) => {
-            debugger;
             return comp.default;
         })
     }
