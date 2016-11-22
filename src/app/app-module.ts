@@ -16,9 +16,10 @@ const routes: Routes = [
     },
     {
         path: 'dynamic-load',
-        loadChildren: () => System.import('../dynamic-load/dynamic-load-module').then((comp: any) => {
-            return comp.default;
-        })
+        // loadChildren: () => System.import('../dynamic-load/dynamic-load-module').then((comp: any) => {
+        //     return comp.default;
+        // })
+        loadChildren: '../dynamic-load/dynamic-load-module#DynamicLoadModule'
     }
 ];
 

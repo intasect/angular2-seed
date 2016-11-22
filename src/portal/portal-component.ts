@@ -40,7 +40,7 @@ export class PortalComponent implements OnInit {
         let canvas = document.createElement('canvas');
         //let test = document.getElementById('test');
         //test.appendChild(canvas);
-        JsBarcode(canvas, '1 1 1 6 1 0 4 0 5 8 8 9 0 0', { format: 'CODE39' });
+        JsBarcode(canvas, '1 1 2 6 1 0 4 0 5 8 8 9 0 0', { format: 'CODE39' });
         this.barcode = canvas.toDataURL('image/png');
     }
 

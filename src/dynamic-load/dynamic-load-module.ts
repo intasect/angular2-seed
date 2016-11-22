@@ -6,13 +6,10 @@ import { SharedModule } from '../shared/shared-module';
 
 import { DynamicLoadComponent } from './dynamic-load-component';
 
-console.log('`DynamicLoadComponent` bundle loaded asynchronously');
-
-export const routes: Routes = [
+const routes: Routes = [
     {
         path: '',
-        component: DynamicLoadComponent,
-        pathMatch: 'full'
+        component: DynamicLoadComponent
     }
 ];
 

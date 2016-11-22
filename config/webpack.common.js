@@ -14,24 +14,19 @@ const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
-const HtmlElementsPlugin = require('./html-elements-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlHeadResource = require('./html-head-resource');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+
 // const autoprefixer = require('autoprefixer-loader');
 
 
 /*
  * Webpack Constants
  */
-const HMR = helpers.hasProcessFlag('hot');
-const METADATA = {
-  title: 'Angular2 Webpack Starter by @gdi2290 from @AngularClass',
-  baseUrl: '/',
-  isDevServer: helpers.isWebpackDevServer()
-};
+const APP_TITLE = 'Angular2 Sample';
 
 /*
  * Webpack configuration
@@ -45,8 +40,6 @@ module.exports = function (options) {
   if (isProd) {
     cssFileName = 'stylesheets/[name].[chunkhash].css';
   }
-
-  const extractCSS = new ExtractTextPlugin(cssFileName);
 
   return {
 
@@ -66,11 +59,9 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#entry
      */
     entry: {
-
       'polyfills': './src/polyfills.browser.ts',
       'vendor': './src/vendor.browser.ts',
       'main': './src/main.browser.ts'
-
     },
 
     /*
@@ -113,7 +104,8 @@ module.exports = function (options) {
           loaders: [
             '@angularclass/hmr-loader?pretty=' + !isProd + '&prod=' + isProd,
             'awesome-typescript-loader',
-            'angular2-template-loader'
+            'angular2-template-loader',
+            'angular2-router-loader?debug=true'
           ],
           exclude: [/\-(spec|e2e)\.ts$/]
         },
@@ -152,7 +144,7 @@ module.exports = function (options) {
         {
           test: /\.html$/,
           loader: 'raw-loader',
-          exclude: [helpers.root('index.html')]
+          exclude: [helpers.root('src/index.html')]
         },
 
         /* File loader for supporting images, for example, in CSS files.
@@ -178,14 +170,26 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
-      extractCSS,
+      /**
+       * Plugin: extract-text-webpack-plugin
+       * Description: Extract text from bundle into a file.
+       *
+       * See: https://github.com/webpack/extract-text-webpack-plugin
+       */
+      new ExtractTextPlugin(cssFileName),
 
+      /**
+       * Plugin: assets-webpack-plugin
+       * Description: Webpack plugin that emits a json file with assets paths
+       *
+       * See: https://github.com/kossnocorp/assets-webpack-plugin
+       
       new AssetsPlugin({
         path: helpers.root('dist'),
         filename: 'webpack-assets.json',
         prettyPrint: true
       }),
-
+*/
       /*
        * Plugin: ForkCheckerPlugin
        * Description: Do type checking in a separate process, so webpack don't need to wait.
@@ -241,65 +245,21 @@ module.exports = function (options) {
        * See: https://github.com/ampedandwired/html-webpack-plugin
        */
       new HtmlWebpackPlugin({
-        template: 'index.html',
-        title: METADATA.title,
+        template: 'src/index.html',
+        title: APP_TITLE,
         chunksSortMode: 'dependency',
-        metadata: METADATA,
         inject: 'head'
       }),
 
+      /**
+       * Plugin: html-webpack-externals-plugin
+       * Description: This plugin supplements the fantastic html-webpack-plugin by providing
+       * a very basic interface for loading your external dependencies.
+       *
+       * See: https://github.com/mmiller42/html-webpack-externals-plugin
+       */
       new HtmlWebpackExternalsPlugin(
-        [
-          // Using a CDN for a JS library
-          {
-            name: 'shim',
-            var: 'shim',
-            path: 'core-js/client/shim.min.js'
-          },
-          {
-            name: 'reflect',
-            var: 'Reflect',
-            path: 'reflect-metadata/Reflect.js'
-          },
-          {
-            name: 'jquery',
-            var: 'jquery',
-            path: 'jquery/dist/jquery.min.js'
-          },
-          // Using a locally installed module for a JS library
-          {
-            name: 'jsBarcode',
-            var: 'JsBarcode',
-            path: 'jsbarcode/dist/JsBarcode.all.min.js'
-          },
-          {
-            name: 'tether',
-            var: 'tether',
-            path: 'tether/dist/js/tether.min.js'
-          },
-          {
-            name: 'bootstrap',
-            var: 'bootstrap',
-            path: 'bootstrap/dist/js/bootstrap.min.js'
-          },
-          // Using a locally installed module for a JS library
-          {
-            name: 'pdfmake',
-            var: 'pdfmake',
-            path: './src/shared/assets/js/pdfmake/pdfmake.js'
-          },
-          // Using a locally installed module for a JS library
-          {
-            name: 'vfs_fonts',
-            var: 'vfs_fonts',
-            path: './src/shared/assets/js/pdfmake/vfs_fonts.js'
-          },
-          // Using a CDN for a library with no export (e.g. a CSS module)
-          {
-            name: 'bootstrap.css',
-            path: 'bootstrap/dist/css/bootstrap.min.css'
-          }
-        ],
+        HtmlHeadResource.resources,
         {
           // Resolve local modules relative to this directory
           basedir: __dirname
@@ -315,41 +275,7 @@ module.exports = function (options) {
        */
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'defer'
-      }),
-
-      /*
-       * Plugin: HtmlElementsPlugin
-       * Description: Generate html tags based on javascript maps.
-       *
-       * If a publicPath is set in the webpack output configuration, it will be automatically added to
-       * href attributes, you can disable that by adding a '=href': false property.
-       * You can also enable it to other attribute by settings '=attName': true.
-       *
-       * The configuration supplied is map between a location (key) and an element definition object (value)
-       * The location (key) is then exported to the template under then htmlElements property in webpack configuration.
-       *
-       * Example:
-       *  Adding this plugin configuration
-       *  new HtmlElementsPlugin({
-       *    headTags: { ... }
-       *  })
-       *
-       *  Means we can use it in the template like this:
-       *  <%= webpackConfig.htmlElements.headTags %>
-       *
-       * Dependencies: HtmlWebpackPlugin
-       */
-      new HtmlElementsPlugin({
-        headTags: require('./head-config.common')
-      }),
-
-      /**
-       * Plugin LoaderOptionsPlugin (experimental)
-       *
-       * See: https://gist.github.com/sokra/27b24881210b56bbaff7
-       */
-      new LoaderOptionsPlugin({}),
-
+      })
     ],
 
     /*
